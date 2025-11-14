@@ -20,8 +20,6 @@
    E.g., If your letter is 'd', ('d' - 'a') = 3 and if it's 'e', ('e' - 'a') = 4.
  */
 
-import java.util.Arrays;
-
 public class ScoreTable {
 
    private static final int[] LETTER_SCORES = {
@@ -48,8 +46,8 @@ public class ScoreTable {
 
    /**
     * Get total score for a word
-    * @param
-    * @return
+    * @param word the word to score
+    * @return totalScore the total score for the word
     */
    public static int getWordScore(String word) {
       int totalScore = 0;

@@ -34,17 +34,23 @@ public class AnagramDictionary {
       @throws FileNotFoundException  if the file is not found
       @throws IllegalDictionaryException  if the dictionary has any duplicate words
     */
-   public AnagramDictionary(String fileName) throws FileNotFoundException,
-                                                    IllegalDictionaryException {
+   public AnagramDictionary(String fileName) throws FileNotFoundException, IllegalDictionaryException {
+      
       anagramMap = new HashMap<>();
 
       File file = new File(fileName);
+      
       // check if file exists
       if (!file.exists()) {
-         throw new FileNotFoundException("ERROR: \"" + fileName + "\" does not exist");
+         throw new IllegalDictionaryException("ERROR: Dictionary file \"" + fileName + "\" does not exist.");
       }
 
-      Scanner input = new Scanner(file);
+      Scanner input;
+      try{
+         input = new Scanner(file);
+      } catch(FileNotFoundException e) {
+         throw new IllegalDictionaryException("ERROR: Dictionary file \"" + fileName + "\" does not exist.");
+      }
       // read each word from dictionary
       while (input.hasNextLine()) {
          String word = input.nextLine().trim();
@@ -61,7 +67,7 @@ public class AnagramDictionary {
             //Check if this word exist
             if (wordList.contains(word)) {
                input.close();
-               throw new IllegalDictionaryException("ERROR: Illegal dictionary" + word);
+               throw new IllegalDictionaryException("ERROR: Illegal dictionary: dictionary file has a duplicate word: " + word);
             }
             wordList.add(word);
          } else {
@@ -75,7 +81,7 @@ public class AnagramDictionary {
    }
    /**
       Method to convert a string to sorted letters to look up anagrams.
-      @param word
+      @param word the word to sort
       @return sorted version of the word's letters
     */
    private String getSortedLetters(String word){

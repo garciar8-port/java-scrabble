@@ -11,6 +11,7 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -40,8 +41,9 @@ public class Rack {
    public ArrayList<String> getAllWords(AnagramDictionary dictionary) {
       ArrayList<String> allWords = new ArrayList<>();
 
-      String unique = getUniqueLetters();
-      int[] mult = getMultiplicity();
+      Map<Character, Integer> letterCounts = getLetterCounts();
+      String unique = getUniqueLetters(letterCounts);
+      int[] mult = getMultiplicity(letterCounts);
 
 
       // Get subsets of the rack
@@ -54,19 +56,25 @@ public class Rack {
       }
       return allWords;
    }
+   /**
+    * Count occurrences of each letter in the rack
+    * @return a map of letter counts
+    */
+   private Map<Character, Integer> getLetterCounts() {
+      Map<Character, Integer> letterCounts = new LinkedHashMap<>();
 
+      for (int i = 0; i < inputRack.length(); i++) {
+         char letter = inputRack.charAt(i);
+         letterCounts.put(letter, letterCounts.getOrDefault(letter, 0) + 1);
+      }
+      return letterCounts;
+   }
    /**
     * Get unique letter count from the rack
     * @return string of unique letters
     */
-   private String getUniqueLetters() {
-      //Count occurrences with hashmap
-      Map<Character, Integer> letterCounts = new HashMap<>();
+   private String getUniqueLetters(Map<Character, Integer> letterCounts) {
 
-      for (int i = 0; i < inputRack.length(); i++) {
-         char letter = inputRack.charAt(i);
-         letterCounts.put(letter, letterCounts.getOrDefault(letter, 0) + 1); // count for each character
-      }
       // create unique string from keys
       StringBuilder unique = new StringBuilder();
       for( char letter : letterCounts.keySet()) {
@@ -75,24 +83,15 @@ public class Rack {
       return unique.toString();
    }
 
-   private int[] getMultiplicity() {
-      // hashmap will count occurrences
-      Map<Character, Integer> letterCounts = new HashMap<>();
-
-      for (int i = 0; i < inputRack.length(); i++) {
-         char letter = inputRack.charAt(i);
-         letterCounts.put(letter, letterCounts.getOrDefault(letter, 0) + 1);
-      }
-      // freq count of each character
+   private int[] getMultiplicity(Map<Character, Integer> letterCounts) {
       int[] multiplicity = new int[letterCounts.size()];
       int index = 0;
-      for(char letter : letterCounts.keySet()) {
-         multiplicity[index] =  letterCounts.get(letter);
+      for (char letter : letterCounts.keySet()) {
+         multiplicity[index] = letterCounts.get(letter);
          index++;
       }
       return multiplicity;
    }
-
 
    /**
       Finds all subsets of the multiset starting at position k in unique and mult.

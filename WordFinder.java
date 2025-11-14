@@ -37,10 +37,10 @@ public class WordFinder {
       }
 
       Scanner input = new Scanner(System.in);
-      System.out.println("Type . to quite.");
+      System.out.println("Type . to quit.");
 
       while (true) {
-         System.out.println("Rack?");
+         System.out.println("Rack? ");
          String inputRack = input.nextLine();
 
          if (inputRack.equals(".")) {
@@ -63,7 +63,7 @@ public class WordFinder {
       Rack rack = new Rack(rackString);
 
       ArrayList<String> allWords = rack.getAllWords(dictionary);
-      System.out.println("We can make " + allWords.size() + " words from " + rackString);
+      System.out.println("We can make " + allWords.size() + " words from \"" + rackString + "\"");
 
       if(allWords.size() == 0) {
          return;
